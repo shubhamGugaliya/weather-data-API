@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-
+import pandas as pd
 app = Flask(__name__)
 
 @app.route("/")
@@ -8,8 +8,9 @@ def home():
 
 @app.route("/api/v1/<word>")
 def about(word):
-    temperature=23
-    return {'definition' : word.upper(),
+    df = pd.read_csv("dictionary/dictionary.csv")
+    definition = df[df['word']==word]['definition'].squeeze()
+    return {'definition' : definition,
             'word' : word}
 
 if __name__=="__main__":
